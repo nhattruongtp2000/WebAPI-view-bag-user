@@ -10,7 +10,7 @@ using WebAPI.Data.EF;
 namespace WebAPI.Data.Migrations
 {
     [DbContext(typeof(WebApiDbContext))]
-    [Migration("20201117084543_initial")]
+    [Migration("20201123081055_initial")]
     partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -94,13 +94,6 @@ namespace WebAPI.Data.Migrations
                     b.HasKey("UserId", "RoleId");
 
                     b.ToTable("UserRoles");
-
-                    b.HasData(
-                        new
-                        {
-                            UserId = new Guid("69bd714f-9576-45ba-b5b7-f00649be00de"),
-                            RoleId = new Guid("8d04dce2-969a-435d-bba4-df3f325983dc")
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>
@@ -121,6 +114,22 @@ namespace WebAPI.Data.Migrations
                     b.HasKey("UserId");
 
                     b.ToTable("UserTokens");
+                });
+
+            modelBuilder.Entity("WebAPI.Data.Entities.Language", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<bool>("IsDefault")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Languages");
                 });
 
             modelBuilder.Entity("WebAPI.Data.Entities.ProductInCategory", b =>
@@ -222,11 +231,21 @@ namespace WebAPI.Data.Migrations
                         .HasColumnType("int")
                         .UseIdentityColumn();
 
+                    b.Property<string>("LanguageId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("categoryName")
                         .IsRequired()
                         .HasColumnType("VARCHAR(200)");
 
+                    b.Property<int?>("idProduct")
+                        .HasColumnType("int");
+
                     b.HasKey("idCategory");
+
+                    b.HasIndex("LanguageId");
+
+                    b.HasIndex("idProduct");
 
                     b.ToTable("productCategories");
 
@@ -276,6 +295,9 @@ namespace WebAPI.Data.Migrations
                         .HasColumnType("int")
                         .UseIdentityColumn();
 
+                    b.Property<string>("LanguageId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("ProductName")
                         .IsRequired()
                         .HasColumnType("VARCHAR(200)");
@@ -305,6 +327,8 @@ namespace WebAPI.Data.Migrations
                         .HasColumnType("VARCHAR(200)");
 
                     b.HasKey("idProductDetail");
+
+                    b.HasIndex("LanguageId");
 
                     b.HasIndex("idProduct");
 
@@ -547,16 +571,6 @@ namespace WebAPI.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Roles");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("8d04dce2-969a-435d-bba4-df3f325983dc"),
-                            ConcurrencyStamp = "febbde93-f100-4feb-b11a-09b395aa913e",
-                            Description = "Administrator role",
-                            Name = "admin",
-                            NormalizedName = "admin"
-                        });
                 });
 
             modelBuilder.Entity("WebAPI.Data.Entities.users", b =>
@@ -634,28 +648,6 @@ namespace WebAPI.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("users");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("69bd714f-9576-45ba-b5b7-f00649be00de"),
-                            AccessFailedCount = 0,
-                            ConcurrencyStamp = "c7590047-68fb-41af-969f-22c551907538",
-                            Email = "nhattruongtp2000@gmail.com",
-                            EmailConfirmed = true,
-                            LockoutEnabled = false,
-                            NormalizedEmail = "nhattruongtp2000@gmail.com",
-                            NormalizedUserName = "admin",
-                            PasswordHash = "AQAAAAEAACcQAAAAEM0n/SIniTrNIuLhfZfvOim9cW4KTvS0hgRzd5/M13nkGGDaLjuwtefz5UsLjEAQQA==",
-                            PhoneNumberConfirmed = false,
-                            SecurityStamp = "",
-                            TwoFactorEnabled = false,
-                            UserName = "admin",
-                            birthday = "2020-10-12 00:00:00",
-                            firstName = "Nguyen",
-                            lastLogin = new DateTime(2020, 11, 13, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            lastName = "Truong"
-                        });
                 });
 
             modelBuilder.Entity("WebAPI.Data.Entities.vouchers", b =>
@@ -720,13 +712,32 @@ namespace WebAPI.Data.Migrations
                     b.Navigation("Users");
                 });
 
+            modelBuilder.Entity("WebAPI.Data.Entities.productCategories", b =>
+                {
+                    b.HasOne("WebAPI.Data.Entities.Language", null)
+                        .WithMany("CategoryTranslations")
+                        .HasForeignKey("LanguageId");
+
+                    b.HasOne("WebAPI.Data.Entities.products", "Products")
+                        .WithMany()
+                        .HasForeignKey("idProduct");
+
+                    b.Navigation("Products");
+                });
+
             modelBuilder.Entity("WebAPI.Data.Entities.productDetail", b =>
                 {
+                    b.HasOne("WebAPI.Data.Entities.Language", "Language")
+                        .WithMany("ProductTranslations")
+                        .HasForeignKey("LanguageId");
+
                     b.HasOne("WebAPI.Data.Entities.products", "Products")
                         .WithMany("productDetails")
                         .HasForeignKey("idProduct")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Language");
 
                     b.Navigation("Products");
                 });
@@ -802,6 +813,13 @@ namespace WebAPI.Data.Migrations
                     b.Navigation("ProductDetail");
 
                     b.Navigation("Users");
+                });
+
+            modelBuilder.Entity("WebAPI.Data.Entities.Language", b =>
+                {
+                    b.Navigation("CategoryTranslations");
+
+                    b.Navigation("ProductTranslations");
                 });
 
             modelBuilder.Entity("WebAPI.Data.Entities.ordersDetails", b =>

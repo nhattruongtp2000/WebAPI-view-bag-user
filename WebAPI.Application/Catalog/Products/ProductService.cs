@@ -64,6 +64,7 @@ namespace WebAPI.Application.Catalog.Products
                          salePrice=request.salePrice,
                          detail=request.detail,
                          dateAdded=DateTime.Now,
+                         LanguageId = request.LanguageId
                      }
                 }
             };
@@ -136,7 +137,8 @@ namespace WebAPI.Application.Catalog.Products
                     salePrice = x.pt.salePrice,
                     ViewCount = x.p.ViewCount,
                     detail=x.pt.detail,
-                    
+                    LanguageId = x.pt.LanguageId,
+
                 }).ToListAsync();
 
             //4. Select and projection
@@ -150,20 +152,22 @@ namespace WebAPI.Application.Catalog.Products
             return pagedResult;
         }
 
-        public async Task<ProductViewModel> GetById(int productId)
+        public async Task<ProductViewModel> GetById(int productId, string languageId)
         {
             var product = await _context.products.FindAsync(productId);
-            var productTranslation = await _context.productDetails.FirstOrDefaultAsync(x => x.idProduct == productId) ;
+            var productTranslation = await _context.productDetails.FirstOrDefaultAsync(x => x.idProduct == productId && x.LanguageId == languageId) ;
 
             var productViewModel = new ProductViewModel()
             {
                 Id = product.idProduct,
                 ProductName = productTranslation.ProductName,
                 price = productTranslation.price,
+                
                 salePrice = productTranslation.salePrice,
                 ViewCount = product.ViewCount,
                 detail = productTranslation.detail,
-                dateAdded =productTranslation.dateAdded
+                dateAdded =productTranslation.dateAdded,
+                LanguageId = productTranslation.LanguageId
             };
             return productViewModel;
         }
@@ -216,7 +220,7 @@ namespace WebAPI.Application.Catalog.Products
         public async Task<int> Update(ProductUpdateRequest request)
         {
             var product = await _context.products.FindAsync(request.Id);
-            var productDetails = await _context.productDetails.FirstOrDefaultAsync(x => x.idProduct == request.Id);
+            var productDetails = await _context.productDetails.FirstOrDefaultAsync(x => x.idProduct == request.Id && x.LanguageId == request.LanguageId);
 
             if (product == null || productDetails == null) throw new WebAPIException($"Cannot find a product with id: {request.Id}");
 
@@ -272,12 +276,13 @@ namespace WebAPI.Application.Catalog.Products
             return fileName;
         }
 
-        public async Task<PagedResult<ProductViewModel>> GetAllByCategoryId(GetPublicProductPagingRequest request)
+        public async Task<PagedResult<ProductViewModel>> GetAllByCategoryId(string languageId,GetPublicProductPagingRequest request)
         {
             var query = from p in _context.products
                         join pt in _context.productDetails on p.idProduct equals pt.idProduct
                         join pic in _context.ProductInCategories on p.idProduct equals pic.idProduct
                         join c in _context.productCategories on pic.idCategory equals c.idCategory
+                        where pt.LanguageId == languageId
                         select new { p, pt, pic };
             //2. filter
             if (request.idCategory.HasValue && request.idCategory.Value > 0)
@@ -294,6 +299,7 @@ namespace WebAPI.Application.Catalog.Products
                     ProductName = x.pt.ProductName,
                     price = x.pt.price,
                     salePrice = x.pt.salePrice,
+                    LanguageId = x.pt.LanguageId,
                     ViewCount = x.p.ViewCount,
                     detail = x.pt.detail,
 

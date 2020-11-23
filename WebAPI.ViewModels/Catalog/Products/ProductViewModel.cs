@@ -14,6 +14,8 @@ namespace WebAPI.ViewModels.Catalog.Products
         public bool isSaling { get; set; }
         public string detail { get; set; }
         public int ViewCount { get; set; }
+
+        public string LanguageId { set; get; }
         public DateTime dateAdded { get; set; }
 
 

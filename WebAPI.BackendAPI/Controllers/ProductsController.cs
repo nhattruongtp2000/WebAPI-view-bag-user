@@ -22,18 +22,18 @@ namespace WebAPI.BackendAPI.Controllers
             _productService = productService;
         }
 
-        [HttpGet]
-        public async Task<IActionResult> GetAllPaging([FromQuery] GetPublicProductPagingRequest request)
+        [HttpGet("{languageId}")]
+        public async Task<IActionResult> GetAllPaging(string languageId, [FromQuery] GetPublicProductPagingRequest request)
         {
-            var products = await _productService.GetAllByCategoryId( request);
+            var products = await _productService.GetAllByCategoryId(languageId, request);
             return Ok(products);
         }
 
         //http://localhost:port/product/1
-        [HttpGet("{idProduct}" )]
-        public async Task<IActionResult> GetById(int idProduct)
+        [HttpGet("{productId}/{languageId}")]
+        public async Task<IActionResult> GetById(int idProduct, string languageId)
         {
-            var product = await _productService.GetById(idProduct);
+            var product = await _productService.GetById(idProduct,  languageId);
             if (product == null)
                 return BadRequest("Cannot find product");
             return Ok(product);
@@ -52,7 +52,7 @@ namespace WebAPI.BackendAPI.Controllers
             if (productId == 0)
                 return BadRequest();
 
-            var product = await _productService.GetById(productId);
+            var product = await _productService.GetById(productId, request.LanguageId);
 
             return CreatedAtAction(nameof(GetById), new { id = productId }, product);
         }

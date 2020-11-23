@@ -19,7 +19,7 @@ namespace WebAPI.Application.Catalog.Products
 
         Task<bool> UpdatePrice(int idProduct, decimal newPrice);
 
-        Task<ProductViewModel> GetById(int productId);
+        Task<ProductViewModel> GetById(int productId, string languageId);
 
         Task AddViewcount(int idProduct);
 
@@ -36,6 +36,6 @@ namespace WebAPI.Application.Catalog.Products
 
         Task<List<ProductImageViewModel>> GetListImages(int idProduct);
 
-        Task<PagedResult<ProductViewModel>> GetAllByCategoryId(GetPublicProductPagingRequest request);
+        Task<PagedResult<ProductViewModel>> GetAllByCategoryId(string languageId,GetPublicProductPagingRequest request);
     }
 }

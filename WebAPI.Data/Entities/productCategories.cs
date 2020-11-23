@@ -18,9 +18,14 @@ namespace WebAPI.Data.Entities
         [Column(TypeName = "VARCHAR(200)")]
         public string categoryName { get; set; }
 
-        
-        
-        
+        public string LanguageId { set; get; }
+
+        [ForeignKey("idProduct")]
+        public virtual products Products { get; set; }
+
+
+
+
 
     }
 }
