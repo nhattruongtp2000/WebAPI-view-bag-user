@@ -13,9 +13,14 @@ namespace WebAPI.Data.Extensions
         public static void Seed(this ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<productDetail>().HasData(
-                new productDetail() { idProduct=1,idProductDetail=1,ProductName="Shoe",price=1000000,salePrice=1000000,detail="goood product",isSaling=false,dateAdded=new DateTime(2019,10,21)},
-                new productDetail() { idProduct=2,idProductDetail = 2, ProductName = "Pro" ,price = 2000000, salePrice = 1000000, detail = "goood product", isSaling = false, expiredSalingDate=new DateTime(2020,10,12), dateAdded = new DateTime(2019, 10, 21) }
+                new productDetail() { idProduct=1,idProductDetail=1, LanguageId = "vi-VN", ProductName="Shoe",price=1000000,salePrice=1000000,detail="goood product",isSaling=false,dateAdded=new DateTime(2019,10,21)},
+                new productDetail() { idProduct=2,idProductDetail = 2, LanguageId = "vi-VN", ProductName = "Pro" ,price = 2000000, salePrice = 1000000, detail = "goood product", isSaling = false, expiredSalingDate=new DateTime(2020,10,12), dateAdded = new DateTime(2019, 10, 21) }
+            );;
+            modelBuilder.Entity<Language>().HasData(
+                new Language() { Id = "vi-VN", Name = "Tiếng Việt", IsDefault = true },
+                new Language() { Id = "en-US", Name = "English", IsDefault = false }
             );
+
             modelBuilder.Entity<productSize>().HasData(
                 new productSize() { idSize="1",sizeName="L"},
                 new productSize() { idSize="2",sizeName="M"}
@@ -40,10 +45,10 @@ namespace WebAPI.Data.Extensions
                 new products() { idProduct = 1 ,idSize = "1", idBrand = "1", idColor = "ffffff", idCategory = "1", idType = "1" },
                 new products() { idProduct = 2, idSize = "1", idBrand = "1", idColor = "ffffff", idCategory = "1", idType = "1" }
             );
-
+           
 
             // any guid
-            /*
+            
             var roleId = new Guid("8D04DCE2-969A-435D-BBA4-DF3F325983DC");
             var adminId = new Guid("69BD714F-9576-45BA-B5B7-F00649BE00DE");
             modelBuilder.Entity<role>().HasData(new role
@@ -63,7 +68,7 @@ namespace WebAPI.Data.Extensions
                 Email = "nhattruongtp2000@gmail.com",
                 NormalizedEmail = "nhattruongtp2000@gmail.com",
                 EmailConfirmed = true,
-                PasswordHash = hasher.HashPassword(null, "Abcd1234$"),
+                PasswordHash = hasher.HashPassword(null, "Admin@123"),
                 SecurityStamp = string.Empty,
                 birthday=new DateTime(2020,10,12),
                 firstName = "Nguyen",
@@ -77,7 +82,7 @@ namespace WebAPI.Data.Extensions
                 RoleId = roleId,
                 UserId = adminId
             });
-            */
+            
         }
     }
 }

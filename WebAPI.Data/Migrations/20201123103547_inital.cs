@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace WebAPI.Data.Migrations
 {
-    public partial class initial : Migration
+    public partial class inital : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -435,6 +435,25 @@ namespace WebAPI.Data.Migrations
                 });
 
             migrationBuilder.InsertData(
+                table: "Languages",
+                columns: new[] { "Id", "IsDefault", "Name" },
+                values: new object[,]
+                {
+                    { "vi-VN", true, "Tiếng Việt" },
+                    { "en-US", false, "English" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Roles",
+                columns: new[] { "Id", "ConcurrencyStamp", "Description", "Name", "NormalizedName" },
+                values: new object[] { new Guid("8d04dce2-969a-435d-bba4-df3f325983dc"), "1245b067-03e1-4ae0-b357-10654fbe9f81", "Administrator role", "admin", "admin" });
+
+            migrationBuilder.InsertData(
+                table: "UserRoles",
+                columns: new[] { "RoleId", "UserId" },
+                values: new object[] { new Guid("8d04dce2-969a-435d-bba4-df3f325983dc"), new Guid("69bd714f-9576-45ba-b5b7-f00649be00de") });
+
+            migrationBuilder.InsertData(
                 table: "productBrands",
                 columns: new[] { "idBrand", "brandDetail", "brandName" },
                 values: new object[,]
@@ -480,6 +499,11 @@ namespace WebAPI.Data.Migrations
                 });
 
             migrationBuilder.InsertData(
+                table: "users",
+                columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName", "birthday", "firstName", "interestedIn", "lastLogin", "lastName", "note", "province" },
+                values: new object[] { new Guid("69bd714f-9576-45ba-b5b7-f00649be00de"), 0, "db43f881-deeb-44ec-84e7-d347848daae5", "nhattruongtp2000@gmail.com", true, false, null, "nhattruongtp2000@gmail.com", "admin", "AQAAAAEAACcQAAAAEEOx6DkokexR8Gx4TwEZ8vuTjADu4fGLILs7LSaOqtSLVglvgBG5yZwSYfbazScRNg==", null, false, "", false, "admin", "2020-10-12 00:00:00", "Nguyen", null, new DateTime(2020, 11, 13, 0, 0, 0, 0, DateTimeKind.Unspecified), "Truong", null, null });
+
+            migrationBuilder.InsertData(
                 table: "products",
                 columns: new[] { "idProduct", "ViewCount", "idBrand", "idCategory", "idColor", "idSize", "idType", "ordersDetailsidOrder" },
                 values: new object[] { 1, 0, "1", "1", "ffffff", "1", "1", null });
@@ -492,12 +516,12 @@ namespace WebAPI.Data.Migrations
             migrationBuilder.InsertData(
                 table: "productDetails",
                 columns: new[] { "idProductDetail", "LanguageId", "ProductName", "dateAdded", "detail", "expiredSalingDate", "idProduct", "isSaling", "price", "salePrice" },
-                values: new object[] { 1, null, "Shoe", new DateTime(2019, 10, 21, 0, 0, 0, 0, DateTimeKind.Unspecified), "goood product", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 1, false, "1000000", "1000000" });
+                values: new object[] { 1, "vi-VN", "Shoe", new DateTime(2019, 10, 21, 0, 0, 0, 0, DateTimeKind.Unspecified), "goood product", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 1, false, "1000000", "1000000" });
 
             migrationBuilder.InsertData(
                 table: "productDetails",
                 columns: new[] { "idProductDetail", "LanguageId", "ProductName", "dateAdded", "detail", "expiredSalingDate", "idProduct", "isSaling", "price", "salePrice" },
-                values: new object[] { 2, null, "Pro", new DateTime(2019, 10, 21, 0, 0, 0, 0, DateTimeKind.Unspecified), "goood product", new DateTime(2020, 10, 12, 0, 0, 0, 0, DateTimeKind.Unspecified), 2, false, "2000000", "1000000" });
+                values: new object[] { 2, "vi-VN", "Pro", new DateTime(2019, 10, 21, 0, 0, 0, 0, DateTimeKind.Unspecified), "goood product", new DateTime(2020, 10, 12, 0, 0, 0, 0, DateTimeKind.Unspecified), 2, false, "2000000", "1000000" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_ordersLists_idOrder",

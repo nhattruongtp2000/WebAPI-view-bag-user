@@ -10,8 +10,8 @@ using WebAPI.Data.EF;
 namespace WebAPI.Data.Migrations
 {
     [DbContext(typeof(WebApiDbContext))]
-    [Migration("20201123081055_initial")]
-    partial class initial
+    [Migration("20201123103547_inital")]
+    partial class inital
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -94,6 +94,13 @@ namespace WebAPI.Data.Migrations
                     b.HasKey("UserId", "RoleId");
 
                     b.ToTable("UserRoles");
+
+                    b.HasData(
+                        new
+                        {
+                            UserId = new Guid("69bd714f-9576-45ba-b5b7-f00649be00de"),
+                            RoleId = new Guid("8d04dce2-969a-435d-bba4-df3f325983dc")
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>
@@ -130,6 +137,20 @@ namespace WebAPI.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Languages");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "vi-VN",
+                            IsDefault = true,
+                            Name = "Tiếng Việt"
+                        },
+                        new
+                        {
+                            Id = "en-US",
+                            IsDefault = false,
+                            Name = "English"
+                        });
                 });
 
             modelBuilder.Entity("WebAPI.Data.Entities.ProductInCategory", b =>
@@ -338,6 +359,7 @@ namespace WebAPI.Data.Migrations
                         new
                         {
                             idProductDetail = 1,
+                            LanguageId = "vi-VN",
                             ProductName = "Shoe",
                             dateAdded = new DateTime(2019, 10, 21, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             detail = "goood product",
@@ -350,6 +372,7 @@ namespace WebAPI.Data.Migrations
                         new
                         {
                             idProductDetail = 2,
+                            LanguageId = "vi-VN",
                             ProductName = "Pro",
                             dateAdded = new DateTime(2019, 10, 21, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             detail = "goood product",
@@ -571,6 +594,16 @@ namespace WebAPI.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Roles");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("8d04dce2-969a-435d-bba4-df3f325983dc"),
+                            ConcurrencyStamp = "1245b067-03e1-4ae0-b357-10654fbe9f81",
+                            Description = "Administrator role",
+                            Name = "admin",
+                            NormalizedName = "admin"
+                        });
                 });
 
             modelBuilder.Entity("WebAPI.Data.Entities.users", b =>
@@ -648,6 +681,28 @@ namespace WebAPI.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("users");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("69bd714f-9576-45ba-b5b7-f00649be00de"),
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "db43f881-deeb-44ec-84e7-d347848daae5",
+                            Email = "nhattruongtp2000@gmail.com",
+                            EmailConfirmed = true,
+                            LockoutEnabled = false,
+                            NormalizedEmail = "nhattruongtp2000@gmail.com",
+                            NormalizedUserName = "admin",
+                            PasswordHash = "AQAAAAEAACcQAAAAEEOx6DkokexR8Gx4TwEZ8vuTjADu4fGLILs7LSaOqtSLVglvgBG5yZwSYfbazScRNg==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "",
+                            TwoFactorEnabled = false,
+                            UserName = "admin",
+                            birthday = "2020-10-12 00:00:00",
+                            firstName = "Nguyen",
+                            lastLogin = new DateTime(2020, 11, 13, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            lastName = "Truong"
+                        });
                 });
 
             modelBuilder.Entity("WebAPI.Data.Entities.vouchers", b =>

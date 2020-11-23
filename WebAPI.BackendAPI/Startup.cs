@@ -17,6 +17,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using WebAPI.Application.Catalog.Products;
 using WebAPI.Application.Common;
+using WebAPI.Application.System.Roles;
 using WebAPI.Application.System.Users;
 using WebAPI.Data.EF;
 using WebAPI.Data.Entities;
@@ -53,6 +54,7 @@ namespace WebAPI.BackendAPI
             services.AddTransient<SignInManager<users>, SignInManager<users>>();
             services.AddTransient<RoleManager<role>, RoleManager<role>>();
             services.AddTransient<IUserService, UserService>();
+            services.AddTransient<IRoleService, RoleService>();
 
             services.AddTransient<IValidator<LoginRequest>, LoginRequestValidator>();
             services.AddTransient<IValidator<RegisterRequest>, RegisterRequestValidator>();
