@@ -17,6 +17,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using WebAPI.Application.Catalog.Products;
 using WebAPI.Application.Common;
+using WebAPI.Application.System.Languages;
 using WebAPI.Application.System.Roles;
 using WebAPI.Application.System.Users;
 using WebAPI.Data.EF;
@@ -53,6 +54,7 @@ namespace WebAPI.BackendAPI
             services.AddTransient<UserManager<users>, UserManager<users>>();
             services.AddTransient<SignInManager<users>, SignInManager<users>>();
             services.AddTransient<RoleManager<role>, RoleManager<role>>();
+            services.AddTransient<ILanguageService, LanguageService>();
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IRoleService, RoleService>();
 
