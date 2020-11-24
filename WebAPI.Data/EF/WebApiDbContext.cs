@@ -24,7 +24,7 @@ namespace WebAPI.Data.EF
 
             modelBuilder.ApplyConfiguration(new productsConfiguration());
             modelBuilder.ApplyConfiguration(new ProductDetailConfiguration());
-
+            modelBuilder.ApplyConfiguration(new ProductInCategoryConfiguration());
             modelBuilder.ApplyConfiguration(new usersConfiguration());
 
             modelBuilder.Entity<IdentityUserClaim<Guid>>().ToTable("UserClaims");
@@ -47,6 +47,8 @@ namespace WebAPI.Data.EF
 
         public DbSet<productCategories> productCategories { get; set; }
 
+        public DbSet<ProductInCategory> ProductInCategories { get; set; }
+
         public DbSet<productColor> productColors { get; set; }
         public DbSet<productDetail> productDetails { get; set; }
         public DbSet<productPhotos> productPhotos { get; set; }
@@ -59,7 +61,7 @@ namespace WebAPI.Data.EF
         public DbSet<rating> ratings { get; set; }
         public DbSet<users> users { get; set; }
         public DbSet<vouchers> vouchers { get; set; }
-        public DbSet<ProductInCategory> ProductInCategories { get; set; }
+
 
 
 

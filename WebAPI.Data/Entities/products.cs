@@ -10,8 +10,7 @@ namespace WebAPI.Data.Entities
     public class products
     {
         [Key]
-        [Required]
-        
+        [Required]        
         public int idProduct { get; set; }
         [Required]
         [Column(TypeName = "VARCHAR(200)")]
@@ -35,6 +34,8 @@ namespace WebAPI.Data.Entities
         public int ViewCount { set; get; }
 
         public List<productDetail> productDetails { get; set; }
+
+        public List<ProductInCategory> productInCategories { get; set; }
 
         public List<productPhotos> productPhotos { get; set; }
 

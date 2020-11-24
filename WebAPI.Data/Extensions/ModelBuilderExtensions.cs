@@ -45,10 +45,13 @@ namespace WebAPI.Data.Extensions
                 new products() { idProduct = 1 ,idSize = "1", idBrand = "1", idColor = "ffffff", idCategory = "1", idType = "1" },
                 new products() { idProduct = 2, idSize = "1", idBrand = "1", idColor = "ffffff", idCategory = "1", idType = "1" }
             );
-           
+            modelBuilder.Entity<ProductInCategory>().HasData(
+                new ProductInCategory() { idProduct = 1, idCategory = 1 }
+                );
+
 
             // any guid
-            
+
             var roleId = new Guid("8D04DCE2-969A-435D-BBA4-DF3F325983DC");
             var adminId = new Guid("69BD714F-9576-45BA-B5B7-F00649BE00DE");
             modelBuilder.Entity<role>().HasData(new role

@@ -19,11 +19,11 @@ namespace WebAPI.Application.Catalog.Products
 
         Task<bool> UpdatePrice(int idProduct, decimal newPrice);
 
-        Task<ProductViewModel> GetById(int productId, string languageId);
+        Task<ProductVm> GetById(int productId, string languageId);
 
         Task AddViewcount(int idProduct);
 
-        Task<PagedResult<ProductViewModel>> GetAllPaging(GetManageProductPagingRequest request);
+        Task<PagedResult<ProductVm>> GetAllPaging(GetManageProductPagingRequest request);
 
         //image
         Task<int> AddImage(int idProduct, ProductImageCreateRequest reques);
@@ -36,6 +36,6 @@ namespace WebAPI.Application.Catalog.Products
 
         Task<List<ProductImageViewModel>> GetListImages(int idProduct);
 
-        Task<PagedResult<ProductViewModel>> GetAllByCategoryId(string languageId,GetPublicProductPagingRequest request);
+        Task<PagedResult<ProductVm>> GetAllByCategoryId(string languageId,GetPublicProductPagingRequest request);
     }
 }

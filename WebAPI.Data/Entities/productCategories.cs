@@ -23,7 +23,9 @@ namespace WebAPI.Data.Entities
         [ForeignKey("idProduct")]
         public virtual products Products { get; set; }
 
+        public List<ProductInCategory> productInCategories { get; set; }
 
+        public List<productDetail> productDetails { get; set; }
 
 
 
