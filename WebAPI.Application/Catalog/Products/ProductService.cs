@@ -51,7 +51,7 @@ namespace WebAPI.Application.Catalog.Products
             {
                 idSize = request.idSize,
                 idBrand = request.idBrand,
-                idCategory = request.idCategory,
+    
                 idColor = request.idColor,
                 idType = request.idType,
                 ViewCount = 0,
@@ -113,18 +113,18 @@ namespace WebAPI.Application.Catalog.Products
             //1. Select join
             var query = from p in _context.products
                         join pt in _context.productDetails on p.idProduct equals pt.idProduct
-                        join pic in _context.ProductInCategories on p.idProduct equals pic.idProduct
-                        join c in _context.productCategories on pic.idCategory equals c.idCategory
+                       // join pic in _context.ProductInCategories on p.idProduct equals pic.idProduct into ProductInCate
+                       // join c in _context.productCategories on pic.idCategory equals c.idCategory
                         where pt.LanguageId == request.LanguageId
-                        select new { p, pt, pic };
+                        select new { p, pt/*, pic*/ };
             //2. filter
             if (!string.IsNullOrEmpty(request.Keyword))
                 query = query.Where(x => x.pt.ProductName.Contains(request.Keyword));
 
-            if (request.CategoryIds != null && request.CategoryIds.Count > 0)
-            {
-                query = query.Where(p => request.CategoryIds.Contains(p.pic.idCategory));
-            }
+            //if (request.CategoryIds != null && request.CategoryIds.Count > 0)
+            //{
+            //    query = query.Where(p => request.CategoryIds.Contains(p.pic.idCategory));
+            //}
             //3. Paging
             int totalRow = await query.CountAsync();
 

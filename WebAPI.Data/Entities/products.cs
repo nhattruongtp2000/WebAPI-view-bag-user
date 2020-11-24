@@ -21,9 +21,7 @@ namespace WebAPI.Data.Entities
         [Required]
         [Column(TypeName = "VARCHAR(200)")]
         public string idColor { get; set; }
-        [Required]
-        [Column(TypeName = "VARCHAR(200)")]
-        public string idCategory { get; set; }
+       
 
         
 

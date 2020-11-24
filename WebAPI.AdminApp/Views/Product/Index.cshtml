@@ -57,7 +57,7 @@
                                 Mã SP
                             </th>
                             <th>
-                                Tên
+                                Tên SP
                             </th>
                             <th>
                                 Giá nhập
@@ -66,7 +66,10 @@
                                 Giá bán
                             </th>
                             <th>
-                                Số lượng tồn
+                                Mô tả
+                            </th>
+                            <th>
+                                Lượt xem
                             </th>
 
                             <th></th>
@@ -75,29 +78,32 @@
                     <tbody>
                         @foreach (var item in Model.Items)
                         {
-                            <tr>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Id)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.ProductName)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.price)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.salePrice)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.ViewCount)
-                                </td>
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Id)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ProductName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.price)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.salePrice)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.detail)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ViewCount)
+                            </td>
 
-                                <td>
-                                    @Html.ActionLink("Sửa", "Edit", new { id = item.Id }) |
-                                    @Html.ActionLink("Xem", "Details", new { id = item.Id }) |
-                                    @Html.ActionLink("Xóa", "Delete", new { id = item.Id }) |
-                                </td>
-                            </tr>
+                            <td>
+                                @Html.ActionLink("Sửa", "Edit", new { id = item.Id }) |
+                                @Html.ActionLink("Xem", "Details", new { id = item.Id }) |
+                                @Html.ActionLink("Xóa", "Delete", new { id = item.Id }) |
+                            </td>
+                        </tr>
                         }
                     </tbody>
                 </table>
