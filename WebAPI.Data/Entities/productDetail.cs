@@ -14,7 +14,7 @@ namespace WebAPI.Data.Entities
         [Key]       
         public int idProductDetail           {get;set;}
         [Required]
-        public int idProduct{ get; set; }
+        public int ProductId { get; set; }
         [Required]
         [Column(TypeName = "VARCHAR(200)")]
         public string ProductName { get; set; }

@@ -11,12 +11,12 @@ namespace WebAPI.Data.Configuration
     {
         public void Configure(EntityTypeBuilder<ProductInCategory> builder)
         {
-            builder.HasKey(t => new { t.idCategory, t.idProduct });
+            builder.HasKey(t => new { t.idCategory, t.ProductId });
 
             builder.ToTable("ProductInCategories");
 
             builder.HasOne(t => t.Product).WithMany(pc => pc.productInCategories)
-                .HasForeignKey(pc => pc.idProduct);
+                .HasForeignKey(pc => pc.ProductId);
 
             builder.HasOne(t => t.Category).WithMany(pc => pc.productInCategories)
               .HasForeignKey(pc => pc.idCategory);

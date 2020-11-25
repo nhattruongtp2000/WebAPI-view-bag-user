@@ -11,7 +11,7 @@ namespace WebAPI.Data.Entities
     {
         [Key]
         [Required]        
-        public int idProduct { get; set; }
+        public int ProductId { get; set; }
         [Required]
         [Column(TypeName = "VARCHAR(200)")]
         public string idSize { get; set; }
@@ -32,6 +32,8 @@ namespace WebAPI.Data.Entities
         public List<productDetail> productDetails { get; set; }
 
         public List<ProductInCategory> productInCategories { get; set; }
+
+        public List<CategoryTranslation> CategoryTranslations { get; set; }
 
         public List<productPhotos> productPhotos { get; set; }
 

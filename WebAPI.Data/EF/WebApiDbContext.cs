@@ -46,7 +46,7 @@ namespace WebAPI.Data.EF
         public DbSet<ordersList> ordersLists { get; set; }
         public DbSet<productBrand> productBrands { get; set; }
 
-        public DbSet<productCategories> productCategories { get; set; }
+        public DbSet<Category> Categories { get; set; }
 
         public DbSet<ProductInCategory> ProductInCategories { get; set; }
 
@@ -55,7 +55,7 @@ namespace WebAPI.Data.EF
         public DbSet<productPhotos> productPhotos { get; set; }
         public DbSet<products> products { get; set; }
         public DbSet<productSize> ProductSizes { get; set; }
-
+        public DbSet<CategoryTranslation> CategoryTranslations { get; set; }
         public DbSet<Language> Languages { get; set; }
 
         public DbSet<productTypes> productTypes { get; set; }

@@ -11,7 +11,7 @@ namespace WebAPI.Data.Configuration
     {
         public void Configure(EntityTypeBuilder<products> builder)
         {
-            builder.Property(x => x.idProduct).UseIdentityColumn();
+            builder.Property(x => x.ProductId).UseIdentityColumn();
         }
     }
 }

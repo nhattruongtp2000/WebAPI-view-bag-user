@@ -11,7 +11,7 @@ namespace WebAPI.Data.Entities
     public class ProductInCategory
     {
         
-        public int  idProduct { get; set; }
+        public int ProductId { get; set; }
 
         
         public virtual products Product { get; set; }
@@ -19,7 +19,7 @@ namespace WebAPI.Data.Entities
         public int idCategory { get; set; }
 
         
-        public virtual productCategories Category { get; set; }
+        public virtual Category Category { get; set; }
 
         
     }

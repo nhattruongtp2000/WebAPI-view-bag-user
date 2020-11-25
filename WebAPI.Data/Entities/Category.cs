@@ -9,7 +9,7 @@ namespace WebAPI.Data.Entities
 {
     
     [Table("productCategories")]
-    public class productCategories
+    public class Category
     {
         [Key]
         [Required]
@@ -26,6 +26,8 @@ namespace WebAPI.Data.Entities
         public List<ProductInCategory> productInCategories { get; set; }
 
         public List<productDetail> productDetails { get; set; }
+
+        public List<CategoryTranslation> CategoryTranslations { get; set; }
 
 
 

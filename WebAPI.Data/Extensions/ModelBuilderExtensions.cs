@@ -13,8 +13,8 @@ namespace WebAPI.Data.Extensions
         public static void Seed(this ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<productDetail>().HasData(
-                new productDetail() { idProduct=1,idProductDetail=1, LanguageId = "vi-VN", ProductName="Shoe",price=1000000,salePrice=1000000,detail="goood product",isSaling=false,dateAdded=new DateTime(2019,10,21)},
-                new productDetail() { idProduct=2,idProductDetail = 2, LanguageId = "vi-VN", ProductName = "Pro" ,price = 2000000, salePrice = 1000000, detail = "goood product", isSaling = false, expiredSalingDate=new DateTime(2020,10,12), dateAdded = new DateTime(2019, 10, 21) }
+                new productDetail() { ProductId = 1,idProductDetail=1, LanguageId = "vi-VN", ProductName="Shoe",price=1000000,salePrice=1000000,detail="goood product",isSaling=false,dateAdded=new DateTime(2019,10,21)},
+                new productDetail() { ProductId = 2,idProductDetail = 2, LanguageId = "vi-VN", ProductName = "Pro" ,price = 2000000, salePrice = 1000000, detail = "goood product", isSaling = false, expiredSalingDate=new DateTime(2020,10,12), dateAdded = new DateTime(2019, 10, 21) }
             );;
             modelBuilder.Entity<Language>().HasData(
                 new Language() { Id = "vi-VN", Name = "Tiếng Việt", IsDefault = true },
@@ -33,23 +33,28 @@ namespace WebAPI.Data.Extensions
                 new productColor() { idColor="ffffff",colorName="While"},
                 new productColor() { idColor = "Red", colorName = "Red" }
             );
-            modelBuilder.Entity<productCategories>().HasData(
-                new productCategories() { idCategory=1,categoryName="Shoes"},
-                new productCategories() { idCategory =2, categoryName = "Shirt" }
+            modelBuilder.Entity<Category>().HasData(
+                new Category() { idCategory=1,categoryName="Shoes"},
+                new Category() { idCategory =2, categoryName = "Shirt" }
             );
             modelBuilder.Entity<productTypes>().HasData(
                 new productTypes() { idType="1",typeName="Cheap"},
                 new productTypes() { idType = "2", typeName = "Expensive" }
             );
             modelBuilder.Entity<products>().HasData(
-                new products() { idProduct = 1 ,idSize = "1", idBrand = "1", idColor = "ffffff",  idType = "1" },
-                new products() { idProduct = 2, idSize = "1", idBrand = "1", idColor = "ffffff",  idType = "1" }
+                new products() { ProductId = 1 ,idSize = "1", idBrand = "1", idColor = "ffffff",  idType = "1" },
+                new products() { ProductId = 2, idSize = "1", idBrand = "1", idColor = "ffffff",  idType = "1" }
             );
             modelBuilder.Entity<ProductInCategory>().HasData(
-                new ProductInCategory() { idProduct = 1, idCategory = 1 }
+                new ProductInCategory() { ProductId = 1, idCategory = 1 }
                 
                 );
-
+            modelBuilder.Entity<CategoryTranslation>().HasData(
+                 new CategoryTranslation() { Id = 1, CategoryId = 1, Name = "Áo nam", LanguageId = "vi-VN", SeoAlias = "ao-nam", SeoDescription = "Sản phẩm áo thời trang nam", SeoTitle = "Sản phẩm áo thời trang nam" },
+                 new CategoryTranslation() { Id = 2, CategoryId = 1, Name = "Men Shirt", LanguageId = "en-US", SeoAlias = "men-shirt", SeoDescription = "The shirt products for men", SeoTitle = "The shirt products for men" },
+                 new CategoryTranslation() { Id = 3, CategoryId = 2, Name = "Áo nữ", LanguageId = "vi-VN", SeoAlias = "ao-nu", SeoDescription = "Sản phẩm áo thời trang nữ", SeoTitle = "Sản phẩm áo thời trang women" },
+                 new CategoryTranslation() { Id = 4, CategoryId = 2, Name = "Women Shirt", LanguageId = "en-US", SeoAlias = "women-shirt", SeoDescription = "The shirt products for women", SeoTitle = "The shirt products for women" }
+                   );
 
             // any guid
 

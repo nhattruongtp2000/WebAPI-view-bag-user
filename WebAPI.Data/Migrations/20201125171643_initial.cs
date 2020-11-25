@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace WebAPI.Data.Migrations
 {
-    public partial class inital : Migration
+    public partial class initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -218,19 +218,18 @@ namespace WebAPI.Data.Migrations
                 name: "products",
                 columns: table => new
                 {
-                    idProduct = table.Column<int>(type: "int", nullable: false)
+                    ProductId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     idSize = table.Column<string>(type: "VARCHAR(200)", nullable: false),
                     idBrand = table.Column<string>(type: "VARCHAR(200)", nullable: false),
                     idColor = table.Column<string>(type: "VARCHAR(200)", nullable: false),
-                    idCategory = table.Column<string>(type: "VARCHAR(200)", nullable: false),
                     idType = table.Column<string>(type: "VARCHAR(200)", nullable: false),
                     ViewCount = table.Column<int>(type: "int", nullable: false),
                     ordersDetailsidOrder = table.Column<string>(type: "VARCHAR(200)", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_products", x => x.idProduct);
+                    table.PrimaryKey("PK_products", x => x.ProductId);
                     table.ForeignKey(
                         name: "FK_products_OrdersDetails_ordersDetailsidOrder",
                         column: x => x.ordersDetailsidOrder,
@@ -283,7 +282,7 @@ namespace WebAPI.Data.Migrations
                         name: "FK_ordersLists_products_idProduct",
                         column: x => x.idProduct,
                         principalTable: "products",
-                        principalColumn: "idProduct",
+                        principalColumn: "ProductId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_ordersLists_users_idUser",
@@ -316,7 +315,69 @@ namespace WebAPI.Data.Migrations
                         name: "FK_productCategories_products_idProduct",
                         column: x => x.idProduct,
                         principalTable: "products",
-                        principalColumn: "idProduct",
+                        principalColumn: "ProductId",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "productPhotos",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    idProduct = table.Column<int>(type: "int", nullable: false),
+                    ImagePath = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
+                    Caption = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
+                    IsDefault = table.Column<bool>(type: "bit", nullable: false),
+                    SortOrder = table.Column<int>(type: "int", nullable: false),
+                    FileSize = table.Column<long>(type: "bigint", nullable: false),
+                    uploadedTime = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_productPhotos", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_productPhotos_products_idProduct",
+                        column: x => x.idProduct,
+                        principalTable: "products",
+                        principalColumn: "ProductId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "CategoryTranslations",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CategoryId = table.Column<int>(type: "int", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    SeoDescription = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    SeoTitle = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    LanguageId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    SeoAlias = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    productsProductId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CategoryTranslations", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_CategoryTranslations_Languages_LanguageId",
+                        column: x => x.LanguageId,
+                        principalTable: "Languages",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_CategoryTranslations_productCategories_CategoryId",
+                        column: x => x.CategoryId,
+                        principalTable: "productCategories",
+                        principalColumn: "idCategory",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_CategoryTranslations_products_productsProductId",
+                        column: x => x.productsProductId,
+                        principalTable: "products",
+                        principalColumn: "ProductId",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -326,7 +387,7 @@ namespace WebAPI.Data.Migrations
                 {
                     idProductDetail = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    idProduct = table.Column<int>(type: "int", nullable: false),
+                    ProductId = table.Column<int>(type: "int", nullable: false),
                     ProductName = table.Column<string>(type: "VARCHAR(200)", nullable: false),
                     price = table.Column<string>(type: "VARCHAR(200)", nullable: false),
                     salePrice = table.Column<string>(type: "VARCHAR(200)", nullable: false),
@@ -334,7 +395,9 @@ namespace WebAPI.Data.Migrations
                     detail = table.Column<string>(type: "VARCHAR(2000)", nullable: false),
                     isSaling = table.Column<bool>(type: "bit", nullable: false),
                     expiredSalingDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    dateAdded = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    dateAdded = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    idProduct = table.Column<int>(type: "int", nullable: true),
+                    CategoryidCategory = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -346,22 +409,29 @@ namespace WebAPI.Data.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
+                        name: "FK_productDetails_productCategories_CategoryidCategory",
+                        column: x => x.CategoryidCategory,
+                        principalTable: "productCategories",
+                        principalColumn: "idCategory",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
                         name: "FK_productDetails_products_idProduct",
                         column: x => x.idProduct,
                         principalTable: "products",
-                        principalColumn: "idProduct",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "ProductId",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
                 name: "ProductInCategories",
                 columns: table => new
                 {
-                    idProduct = table.Column<int>(type: "int", nullable: false),
+                    ProductId = table.Column<int>(type: "int", nullable: false),
                     idCategory = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
+                    table.PrimaryKey("PK_ProductInCategories", x => new { x.idCategory, x.ProductId });
                     table.ForeignKey(
                         name: "FK_ProductInCategories_productCategories_idCategory",
                         column: x => x.idCategory,
@@ -369,42 +439,10 @@ namespace WebAPI.Data.Migrations
                         principalColumn: "idCategory",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ProductInCategories_products_idProduct",
-                        column: x => x.idProduct,
+                        name: "FK_ProductInCategories_products_ProductId",
+                        column: x => x.ProductId,
                         principalTable: "products",
-                        principalColumn: "idProduct",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "productPhotos",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    idProduct = table.Column<int>(type: "int", nullable: false),
-                    ImagePath = table.Column<string>(type: "VARCHAR(200)", nullable: false),
-                    Caption = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    IsDefault = table.Column<bool>(type: "bit", nullable: false),
-                    SortOrder = table.Column<int>(type: "int", nullable: false),
-                    FileSize = table.Column<long>(type: "bigint", nullable: false),
-                    uploadedTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    productDetailidProductDetail = table.Column<int>(type: "int", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_productPhotos", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_productPhotos_productDetails_productDetailidProductDetail",
-                        column: x => x.productDetailidProductDetail,
-                        principalTable: "productDetails",
-                        principalColumn: "idProductDetail",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_productPhotos_products_idProduct",
-                        column: x => x.idProduct,
-                        principalTable: "products",
-                        principalColumn: "idProduct",
+                        principalColumn: "ProductId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -413,10 +451,11 @@ namespace WebAPI.Data.Migrations
                 columns: table => new
                 {
                     idUser = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    idProduct = table.Column<int>(type: "int", nullable: false),
+                    ProductId = table.Column<int>(type: "int", nullable: false),
                     comment = table.Column<string>(type: "VARCHAR(200)", nullable: false),
                     rateDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    rate = table.Column<int>(type: "int", nullable: false)
+                    rate = table.Column<int>(type: "int", nullable: false),
+                    idProduct = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -425,7 +464,7 @@ namespace WebAPI.Data.Migrations
                         column: x => x.idProduct,
                         principalTable: "productDetails",
                         principalColumn: "idProductDetail",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_ratings_users_idUser",
                         column: x => x.idUser,
@@ -446,7 +485,7 @@ namespace WebAPI.Data.Migrations
             migrationBuilder.InsertData(
                 table: "Roles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Description", "Name", "NormalizedName" },
-                values: new object[] { new Guid("8d04dce2-969a-435d-bba4-df3f325983dc"), "1245b067-03e1-4ae0-b357-10654fbe9f81", "Administrator role", "admin", "admin" });
+                values: new object[] { new Guid("8d04dce2-969a-435d-bba4-df3f325983dc"), "abda05e3-09ec-43fb-b740-975673c29dc5", "Administrator role", "admin", "admin" });
 
             migrationBuilder.InsertData(
                 table: "UserRoles",
@@ -501,27 +540,56 @@ namespace WebAPI.Data.Migrations
             migrationBuilder.InsertData(
                 table: "users",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName", "birthday", "firstName", "interestedIn", "lastLogin", "lastName", "note", "province" },
-                values: new object[] { new Guid("69bd714f-9576-45ba-b5b7-f00649be00de"), 0, "db43f881-deeb-44ec-84e7-d347848daae5", "nhattruongtp2000@gmail.com", true, false, null, "nhattruongtp2000@gmail.com", "admin", "AQAAAAEAACcQAAAAEEOx6DkokexR8Gx4TwEZ8vuTjADu4fGLILs7LSaOqtSLVglvgBG5yZwSYfbazScRNg==", null, false, "", false, "admin", "2020-10-12 00:00:00", "Nguyen", null, new DateTime(2020, 11, 13, 0, 0, 0, 0, DateTimeKind.Unspecified), "Truong", null, null });
+                values: new object[] { new Guid("69bd714f-9576-45ba-b5b7-f00649be00de"), 0, "dd749c45-1cc9-479d-bd72-0f7db1999c3f", "nhattruongtp2000@gmail.com", true, false, null, "nhattruongtp2000@gmail.com", "admin", "AQAAAAEAACcQAAAAEFcX/psx36KMGfHWBWTDFk2s4jt7NyzX99lWOU8cUJxrTV9MfkZelTQKz6L8ipvK5w==", null, false, "", false, "admin", "2020-10-12 00:00:00", "Nguyen", null, new DateTime(2020, 11, 13, 0, 0, 0, 0, DateTimeKind.Unspecified), "Truong", null, null });
 
             migrationBuilder.InsertData(
-                table: "products",
-                columns: new[] { "idProduct", "ViewCount", "idBrand", "idCategory", "idColor", "idSize", "idType", "ordersDetailsidOrder" },
-                values: new object[] { 1, 0, "1", "1", "ffffff", "1", "1", null });
-
-            migrationBuilder.InsertData(
-                table: "products",
-                columns: new[] { "idProduct", "ViewCount", "idBrand", "idCategory", "idColor", "idSize", "idType", "ordersDetailsidOrder" },
-                values: new object[] { 2, 0, "1", "1", "ffffff", "1", "1", null });
-
-            migrationBuilder.InsertData(
-                table: "productDetails",
-                columns: new[] { "idProductDetail", "LanguageId", "ProductName", "dateAdded", "detail", "expiredSalingDate", "idProduct", "isSaling", "price", "salePrice" },
-                values: new object[] { 1, "vi-VN", "Shoe", new DateTime(2019, 10, 21, 0, 0, 0, 0, DateTimeKind.Unspecified), "goood product", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 1, false, "1000000", "1000000" });
+                table: "CategoryTranslations",
+                columns: new[] { "Id", "CategoryId", "LanguageId", "Name", "SeoAlias", "SeoDescription", "SeoTitle", "productsProductId" },
+                values: new object[,]
+                {
+                    { 1, 1, "vi-VN", "Áo nam", "ao-nam", "Sản phẩm áo thời trang nam", "Sản phẩm áo thời trang nam", null },
+                    { 3, 2, "vi-VN", "Áo nữ", "ao-nu", "Sản phẩm áo thời trang nữ", "Sản phẩm áo thời trang women", null },
+                    { 2, 1, "en-US", "Men Shirt", "men-shirt", "The shirt products for men", "The shirt products for men", null },
+                    { 4, 2, "en-US", "Women Shirt", "women-shirt", "The shirt products for women", "The shirt products for women", null }
+                });
 
             migrationBuilder.InsertData(
                 table: "productDetails",
-                columns: new[] { "idProductDetail", "LanguageId", "ProductName", "dateAdded", "detail", "expiredSalingDate", "idProduct", "isSaling", "price", "salePrice" },
-                values: new object[] { 2, "vi-VN", "Pro", new DateTime(2019, 10, 21, 0, 0, 0, 0, DateTimeKind.Unspecified), "goood product", new DateTime(2020, 10, 12, 0, 0, 0, 0, DateTimeKind.Unspecified), 2, false, "2000000", "1000000" });
+                columns: new[] { "idProductDetail", "CategoryidCategory", "LanguageId", "ProductId", "ProductName", "dateAdded", "detail", "expiredSalingDate", "idProduct", "isSaling", "price", "salePrice" },
+                values: new object[,]
+                {
+                    { 1, null, "vi-VN", 1, "Shoe", new DateTime(2019, 10, 21, 0, 0, 0, 0, DateTimeKind.Unspecified), "goood product", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, false, "1000000", "1000000" },
+                    { 2, null, "vi-VN", 2, "Pro", new DateTime(2019, 10, 21, 0, 0, 0, 0, DateTimeKind.Unspecified), "goood product", new DateTime(2020, 10, 12, 0, 0, 0, 0, DateTimeKind.Unspecified), null, false, "2000000", "1000000" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "products",
+                columns: new[] { "ProductId", "ViewCount", "idBrand", "idColor", "idSize", "idType", "ordersDetailsidOrder" },
+                values: new object[,]
+                {
+                    { 1, 0, "1", "ffffff", "1", "1", null },
+                    { 2, 0, "1", "ffffff", "1", "1", null }
+                });
+
+            migrationBuilder.InsertData(
+                table: "ProductInCategories",
+                columns: new[] { "ProductId", "idCategory" },
+                values: new object[] { 1, 1 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CategoryTranslations_CategoryId",
+                table: "CategoryTranslations",
+                column: "CategoryId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CategoryTranslations_LanguageId",
+                table: "CategoryTranslations",
+                column: "LanguageId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CategoryTranslations_productsProductId",
+                table: "CategoryTranslations",
+                column: "productsProductId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ordersLists_idOrder",
@@ -549,6 +617,11 @@ namespace WebAPI.Data.Migrations
                 column: "LanguageId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_productDetails_CategoryidCategory",
+                table: "productDetails",
+                column: "CategoryidCategory");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_productDetails_idProduct",
                 table: "productDetails",
                 column: "idProduct");
@@ -559,24 +632,14 @@ namespace WebAPI.Data.Migrations
                 column: "LanguageId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ProductInCategories_idCategory",
+                name: "IX_ProductInCategories_ProductId",
                 table: "ProductInCategories",
-                column: "idCategory");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ProductInCategories_idProduct",
-                table: "ProductInCategories",
-                column: "idProduct");
+                column: "ProductId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_productPhotos_idProduct",
                 table: "productPhotos",
                 column: "idProduct");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_productPhotos_productDetailidProductDetail",
-                table: "productPhotos",
-                column: "productDetailidProductDetail");
 
             migrationBuilder.CreateIndex(
                 name: "IX_products_idBrand",
@@ -617,6 +680,9 @@ namespace WebAPI.Data.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "CategoryTranslations");
+
+            migrationBuilder.DropTable(
                 name: "ordersLists");
 
             migrationBuilder.DropTable(
@@ -650,13 +716,13 @@ namespace WebAPI.Data.Migrations
                 name: "vouchers");
 
             migrationBuilder.DropTable(
-                name: "productCategories");
-
-            migrationBuilder.DropTable(
                 name: "productDetails");
 
             migrationBuilder.DropTable(
                 name: "users");
+
+            migrationBuilder.DropTable(
+                name: "productCategories");
 
             migrationBuilder.DropTable(
                 name: "Languages");
