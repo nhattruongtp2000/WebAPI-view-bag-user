@@ -121,6 +121,88 @@ namespace WebAPI.Data.Migrations
                     b.ToTable("UserTokens");
                 });
 
+            modelBuilder.Entity("WebAPI.Data.Entities.CategoryTranslation", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("LanguageId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("SeoAlias")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("SeoDescription")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("SeoTitle")
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
+
+                    b.HasIndex("LanguageId");
+
+                    b.ToTable("CategoryTranslations");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CategoryId = 1,
+                            LanguageId = "vi-VN",
+                            Name = "Áo nam",
+                            SeoAlias = "ao-nam",
+                            SeoDescription = "Sản phẩm áo thời trang nam",
+                            SeoTitle = "Sản phẩm áo thời trang nam"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CategoryId = 1,
+                            LanguageId = "en-US",
+                            Name = "Men Shirt",
+                            SeoAlias = "men-shirt",
+                            SeoDescription = "The shirt products for men",
+                            SeoTitle = "The shirt products for men"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            CategoryId = 2,
+                            LanguageId = "vi-VN",
+                            Name = "Áo nữ",
+                            SeoAlias = "ao-nu",
+                            SeoDescription = "Sản phẩm áo thời trang nữ",
+                            SeoTitle = "Sản phẩm áo thời trang women"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            CategoryId = 2,
+                            LanguageId = "en-US",
+                            Name = "Women Shirt",
+                            SeoAlias = "women-shirt",
+                            SeoDescription = "The shirt products for women",
+                            SeoTitle = "The shirt products for women"
+                        });
+                });
+
             modelBuilder.Entity("WebAPI.Data.Entities.Language", b =>
                 {
                     b.Property<string>("Id")
@@ -258,7 +340,7 @@ namespace WebAPI.Data.Migrations
                         .UseIdentityColumn();
 
                     b.Property<string>("LanguageId")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("categoryName")
                         .IsRequired()
@@ -268,8 +350,6 @@ namespace WebAPI.Data.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("idCategory");
-
-                    b.HasIndex("LanguageId");
 
                     b.HasIndex("idProduct");
 
@@ -600,7 +680,7 @@ namespace WebAPI.Data.Migrations
                         new
                         {
                             Id = new Guid("8d04dce2-969a-435d-bba4-df3f325983dc"),
-                            ConcurrencyStamp = "81ab4243-adcc-49a5-af55-9064cebcff30",
+                            ConcurrencyStamp = "cb5a5e66-4a1a-4f17-8d0e-cbf34584cdd3",
                             Description = "Administrator role",
                             Name = "admin",
                             NormalizedName = "admin"
@@ -688,13 +768,13 @@ namespace WebAPI.Data.Migrations
                         {
                             Id = new Guid("69bd714f-9576-45ba-b5b7-f00649be00de"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "6e43ffa3-7689-4f78-b29e-46b15a7ae447",
+                            ConcurrencyStamp = "d5e7bd4d-63d2-44eb-89fb-1c1b8ecb0c27",
                             Email = "nhattruongtp2000@gmail.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "nhattruongtp2000@gmail.com",
                             NormalizedUserName = "admin",
-                            PasswordHash = "AQAAAAEAACcQAAAAEPfotnok9mfSbUBssgTduaMfZwTbcDS1kLyPy/FgR/Mbwypa12BS1WIaBrr8MEiyXw==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEHlnUqdnVmvae/g7c14XSSN7eeAnt0+ml4YHOby9HXcQ0o278TzukdKnV5NJ/PdN/w==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             TwoFactorEnabled = false,
@@ -720,6 +800,23 @@ namespace WebAPI.Data.Migrations
                     b.HasKey("idVoucher");
 
                     b.ToTable("vouchers");
+                });
+
+            modelBuilder.Entity("WebAPI.Data.Entities.CategoryTranslation", b =>
+                {
+                    b.HasOne("WebAPI.Data.Entities.productCategories", "productCategories")
+                        .WithMany("CategoryTranslations")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("WebAPI.Data.Entities.Language", "Language")
+                        .WithMany("CategoryTranslations")
+                        .HasForeignKey("LanguageId");
+
+                    b.Navigation("Language");
+
+                    b.Navigation("productCategories");
                 });
 
             modelBuilder.Entity("WebAPI.Data.Entities.ProductInCategory", b =>
@@ -770,10 +867,6 @@ namespace WebAPI.Data.Migrations
 
             modelBuilder.Entity("WebAPI.Data.Entities.productCategories", b =>
                 {
-                    b.HasOne("WebAPI.Data.Entities.Language", null)
-                        .WithMany("CategoryTranslations")
-                        .HasForeignKey("LanguageId");
-
                     b.HasOne("WebAPI.Data.Entities.products", "Products")
                         .WithMany()
                         .HasForeignKey("idProduct");
@@ -890,6 +983,8 @@ namespace WebAPI.Data.Migrations
 
             modelBuilder.Entity("WebAPI.Data.Entities.productCategories", b =>
                 {
+                    b.Navigation("CategoryTranslations");
+
                     b.Navigation("productDetails");
 
                     b.Navigation("productInCategories");

@@ -27,6 +27,7 @@ namespace WebAPI.Data.EF
             modelBuilder.ApplyConfiguration(new ProductInCategoryConfiguration());
             modelBuilder.ApplyConfiguration(new usersConfiguration());
             modelBuilder.ApplyConfiguration(new productPhotosConfiguration());
+            modelBuilder.ApplyConfiguration(new CategoryTranslationConfiguration());
 
             modelBuilder.Entity<IdentityUserClaim<Guid>>().ToTable("UserClaims");
             modelBuilder.Entity<IdentityUserRole<Guid>>().ToTable("UserRoles").HasKey(x => new { x.UserId, x.RoleId });
@@ -57,6 +58,8 @@ namespace WebAPI.Data.EF
         public DbSet<productSize> ProductSizes { get; set; }
 
         public DbSet<Language> Languages { get; set; }
+
+        public DbSet<CategoryTranslation> CategoryTranslations { get; set; }
 
         public DbSet<productTypes> productTypes { get; set; }
         public DbSet<rating> ratings { get; set; }

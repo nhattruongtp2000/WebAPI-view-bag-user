@@ -15,6 +15,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using WebAPI.Application.Catalog.Categories;
 using WebAPI.Application.Catalog.Products;
 using WebAPI.Application.Common;
 using WebAPI.Application.System.Languages;
@@ -57,6 +58,7 @@ namespace WebAPI.BackendAPI
             services.AddTransient<ILanguageService, LanguageService>();
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IRoleService, RoleService>();
+            services.AddTransient<ICategoryService, CategoryService>();
 
             services.AddTransient<IValidator<LoginRequest>, LoginRequestValidator>();
             services.AddTransient<IValidator<RegisterRequest>, RegisterRequestValidator>();

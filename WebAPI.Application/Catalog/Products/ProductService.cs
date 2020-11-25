@@ -120,25 +120,26 @@ namespace WebAPI.Application.Catalog.Products
             return await _context.SaveChangesAsync();
         }
 
-      
 
-        public  async Task<PagedResult<ProductVm>> GetAllPaging(GetManageProductPagingRequest request)
+
+        public async Task<PagedResult<ProductVm>> GetAllPaging(GetManageProductPagingRequest request)
         {
             //1. Select join
             var query = from p in _context.products
                         join pt in _context.productDetails on p.idProduct equals pt.idProduct
-                       // join pic in _context.ProductInCategories on p.idProduct equals pic.idProduct into ProductInCate
-                       // join c in _context.productCategories on pic.idCategory equals c.idCategory
+                        join pic in _context.ProductInCategories on p.idProduct equals pic.idProduct
+                        join c in _context.productCategories on pic.idCategory equals c.idCategory
                         where pt.LanguageId == request.LanguageId
-                        select new { p, pt/*, pic*/ };
+                        select new { p, pt, pic };
             //2. filter
             if (!string.IsNullOrEmpty(request.Keyword))
                 query = query.Where(x => x.pt.ProductName.Contains(request.Keyword));
 
-            //if (request.CategoryIds != null && request.CategoryIds.Count > 0)
-            //{
-            //    query = query.Where(p => request.CategoryIds.Contains(p.pic.idCategory));
-            //}
+            if (request.idCategory != null && request.idCategory != 0)
+            {
+                query = query.Where(p => p.pic.idCategory == request.idCategory);
+            }
+
             //3. Paging
             int totalRow = await query.CountAsync();
 
@@ -148,25 +149,24 @@ namespace WebAPI.Application.Catalog.Products
                 {
                     Id = x.p.idProduct,
                     ProductName = x.pt.ProductName,
+                    dateAdded = x.pt.dateAdded,                
+                    detail = x.pt.detail,
+                    LanguageId = x.pt.LanguageId,
                     price = x.pt.price,
                     salePrice = x.pt.salePrice,
                     ViewCount = x.p.ViewCount,
-                    detail=x.pt.detail,
-                    LanguageId = x.pt.LanguageId,
-
                 }).ToListAsync();
 
             //4. Select and projection
             var pagedResult = new PagedResult<ProductVm>()
             {
                 TotalRecords = totalRow,
-                PageIndex=request.PageIndex,
-                PageSize=request.PageSize,
+                PageSize = request.PageSize,
+                PageIndex = request.PageIndex,
                 Items = data
             };
             return pagedResult;
         }
-
         public async Task<ProductVm> GetById(int productId, string languageId)
         {
             var product = await _context.products.FindAsync(productId);

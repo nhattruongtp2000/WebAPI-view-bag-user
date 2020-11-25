@@ -47,6 +47,9 @@ namespace WebAPI.AdminApp.Services
             }
             return JsonConvert.DeserializeObject<TResponse>(body);
         }
+
+       
+
     }
 }
 

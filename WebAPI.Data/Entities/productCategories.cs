@@ -27,7 +27,7 @@ namespace WebAPI.Data.Entities
 
         public List<productDetail> productDetails { get; set; }
 
-
+        public List<CategoryTranslation> CategoryTranslations { get; set; }
 
     }
 }

@@ -18,6 +18,6 @@ namespace WebAPI.Data.Entities
 
         public List<productDetail> ProductTranslations { get; set; }
 
-        public List<productCategories> CategoryTranslations { get; set; }
+        public List<CategoryTranslation> CategoryTranslations { get; set; }
     }
 }
