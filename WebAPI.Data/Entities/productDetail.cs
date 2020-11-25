@@ -39,7 +39,7 @@ namespace WebAPI.Data.Entities
 
         [ForeignKey("idProduct")]
         public virtual products Products { get; set; }
-        public virtual ICollection<productPhotos> productPhotos { set; get; }
+
 
         [ForeignKey("LanguageId")]
         public virtual Language Language { get; set; }

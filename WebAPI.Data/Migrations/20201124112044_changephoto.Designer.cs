@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebAPI.Data.EF;
 
 namespace WebAPI.Data.Migrations
 {
     [DbContext(typeof(WebApiDbContext))]
-    partial class WebApiDbContextModelSnapshot : ModelSnapshot
+    [Migration("20201124112044_changephoto")]
+    partial class changephoto
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -422,12 +424,17 @@ namespace WebAPI.Data.Migrations
                     b.Property<int>("idProduct")
                         .HasColumnType("int");
 
+                    b.Property<int?>("productDetailidProductDetail")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("uploadedTime")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
                     b.HasIndex("idProduct");
+
+                    b.HasIndex("productDetailidProductDetail");
 
                     b.ToTable("productPhotos");
                 });
@@ -600,7 +607,7 @@ namespace WebAPI.Data.Migrations
                         new
                         {
                             Id = new Guid("8d04dce2-969a-435d-bba4-df3f325983dc"),
-                            ConcurrencyStamp = "81ab4243-adcc-49a5-af55-9064cebcff30",
+                            ConcurrencyStamp = "a71a52f2-9e1e-4cdb-b20c-898d6d1498d4",
                             Description = "Administrator role",
                             Name = "admin",
                             NormalizedName = "admin"
@@ -688,13 +695,13 @@ namespace WebAPI.Data.Migrations
                         {
                             Id = new Guid("69bd714f-9576-45ba-b5b7-f00649be00de"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "6e43ffa3-7689-4f78-b29e-46b15a7ae447",
+                            ConcurrencyStamp = "e07cc706-e484-4583-9280-8e9f3df61525",
                             Email = "nhattruongtp2000@gmail.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "nhattruongtp2000@gmail.com",
                             NormalizedUserName = "admin",
-                            PasswordHash = "AQAAAAEAACcQAAAAEPfotnok9mfSbUBssgTduaMfZwTbcDS1kLyPy/FgR/Mbwypa12BS1WIaBrr8MEiyXw==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEN853eAlymzfFslK2dyN3x7Wt+NBA/w6zpYgEVPSpSkWEme8MgVrWfpoxMP0/sTBDw==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             TwoFactorEnabled = false,
@@ -810,6 +817,10 @@ namespace WebAPI.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("WebAPI.Data.Entities.productDetail", null)
+                        .WithMany("productPhotos")
+                        .HasForeignKey("productDetailidProductDetail");
+
                     b.Navigation("Product");
                 });
 
@@ -898,6 +909,11 @@ namespace WebAPI.Data.Migrations
             modelBuilder.Entity("WebAPI.Data.Entities.productColor", b =>
                 {
                     b.Navigation("Products");
+                });
+
+            modelBuilder.Entity("WebAPI.Data.Entities.productDetail", b =>
+                {
+                    b.Navigation("productPhotos");
                 });
 
             modelBuilder.Entity("WebAPI.Data.Entities.productSize", b =>

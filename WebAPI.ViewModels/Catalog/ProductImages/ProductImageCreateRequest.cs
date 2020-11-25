@@ -11,7 +11,7 @@ namespace WebAPI.ViewModels.Catalog.ProductImages
 
         public bool IsDefault { get; set; }
 
-        public int SortOrder { get; set; }
+        public int SortOrder { get; set; }  
 
         public IFormFile ImageFile { get; set; }
     }

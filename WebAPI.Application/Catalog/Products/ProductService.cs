@@ -27,14 +27,28 @@ namespace WebAPI.Application.Catalog.Products
             _storageService = storageService;
         }
 
-        public Task<int> AddImage(int idProduct, List<IFormFile> files)
-        {
-            throw new NotImplementedException();
-        }
+      
 
-        public Task<int> AddImage(int idProduct, ProductImageCreateRequest reques)
+        public async Task<int> AddImage(int idProduct, ProductImageCreateRequest request)
         {
-            throw new NotImplementedException();
+            var ProductPhoto = new productPhotos()
+            {
+                Caption = request.Caption,
+                uploadedTime = DateTime.Now,
+                IsDefault = request.IsDefault,
+                idProduct = idProduct,
+                SortOrder = request.SortOrder,
+                         
+            };
+
+            if (request.ImageFile != null)
+            {
+                ProductPhoto.ImagePath = await this.SaveFile(request.ImageFile);
+                ProductPhoto.FileSize = request.ImageFile.Length;
+            }
+            _context.productPhotos.Add(ProductPhoto);
+            await _context.SaveChangesAsync();
+            return ProductPhoto.Id;
         }
 
         public async Task AddViewcount(int idProduct)
@@ -81,11 +95,11 @@ namespace WebAPI.Application.Catalog.Products
                         FileSize = request.ThumbnailImage.Length,
                         ImagePath = await this.SaveFile(request.ThumbnailImage),
                         IsDefault = true,
-                        
+                        SortOrder = 1
                     }
                 };
             }
-            _context.Add(product);
+            _context.products.Add(product);
             await _context.SaveChangesAsync();
             return product.idProduct;
         }
@@ -182,7 +196,7 @@ namespace WebAPI.Application.Catalog.Products
             var viewModel = new ProductImageViewModel()
             {
                 Caption = image.Caption,
-                DateCreated = image.uploadedTime,
+                uploadedTime = image.uploadedTime,
                 FileSize = image.FileSize,
                 Id = image.Id,
                 ImagePath = image.ImagePath,
@@ -199,7 +213,7 @@ namespace WebAPI.Application.Catalog.Products
                .Select(i => new ProductImageViewModel()
                {
                    Caption = i.Caption,
-                   DateCreated = i.uploadedTime,
+                   uploadedTime = i.uploadedTime,
                    FileSize = i.FileSize,
                    Id = i.Id,
                    ImagePath = i.ImagePath,
@@ -228,6 +242,7 @@ namespace WebAPI.Application.Catalog.Products
             productDetails.ProductName = request.ProductName;
             productDetails.price = request.price;
             productDetails.detail = request.detail;
+            productDetails.salePrice = request.salePrice;
 
             //Save image
             if (request.ThumbnailImage != null)

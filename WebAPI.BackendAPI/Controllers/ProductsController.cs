@@ -30,7 +30,7 @@ namespace WebAPI.BackendAPI.Controllers
         }
 
         //http://localhost:port/product/1
-        [HttpGet("{productId}/{languageId}")]
+        [HttpGet("{idProduct}/{languageId}")]
         public async Task<IActionResult> GetById(int idProduct, string languageId)
         {
             var product = await _productService.GetById(idProduct,  languageId);
@@ -49,13 +49,13 @@ namespace WebAPI.BackendAPI.Controllers
                 return BadRequest(ModelState);
             }
 
-            var productId = await _productService.Create(request);
-            if (productId == 0)
+            var idProduct = await _productService.Create(request);
+            if (idProduct == 0)
                 return BadRequest();
 
-            var product = await _productService.GetById(productId, request.LanguageId);
+            var product = await _productService.GetById(idProduct, request.LanguageId);
 
-            return CreatedAtAction(nameof(GetById), new { id = productId }, product);
+            return CreatedAtAction(nameof(GetById), new { id = idProduct }, product);
         }
 
         //edit
@@ -97,13 +97,13 @@ namespace WebAPI.BackendAPI.Controllers
 
         //Images
         [HttpPost("{idProduct}/images")]
-        public async Task<IActionResult> CreateImage(int productId, [FromForm] ProductImageCreateRequest request)
+        public async Task<IActionResult> CreateImage(int idProduct, [FromForm] ProductImageCreateRequest request)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            var imageId = await _productService.AddImage(productId, request);
+            var imageId = await _productService.AddImage(idProduct, request);
             if (imageId == 0)
                 return BadRequest();
 

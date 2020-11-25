@@ -26,7 +26,7 @@ namespace WebAPI.Application.Catalog.Products
         Task<PagedResult<ProductVm>> GetAllPaging(GetManageProductPagingRequest request);
 
         //image
-        Task<int> AddImage(int idProduct, ProductImageCreateRequest reques);
+        Task<int> AddImage(int idProduct, ProductImageCreateRequest request);
 
         Task<int> RemoveImage(int  imageId);
 

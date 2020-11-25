@@ -16,7 +16,7 @@ namespace WebAPI.ViewModels.Catalog.ProductImages
 
         public bool IsDefault { get; set; }
 
-        public DateTime DateCreated { get; set; }
+        public DateTime uploadedTime { get; set; }
 
         public int SortOrder { get; set; }
 
