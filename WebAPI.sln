@@ -15,7 +15,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebAPI.Utilities", "WebAPI.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebAPI.BackendAPI", "WebAPI.BackendAPI\WebAPI.BackendAPI.csproj", "{A33DA369-E5F9-4D3A-92AA-E71F38E8964D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebAPI.AdminApp", "WebAPI.AdminApp\WebAPI.AdminApp.csproj", "{6E60A732-E883-451D-B630-6817D62359B7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebAPI.AdminApp", "WebAPI.AdminApp\WebAPI.AdminApp.csproj", "{6E60A732-E883-451D-B630-6817D62359B7}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Hosts", "Hosts", "{A8E777BC-488F-459E-91E5-29C27EDD5AE4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -54,6 +56,11 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{AF77CEB6-34E9-4B13-9CC3-448B6BD8B108} = {A8E777BC-488F-459E-91E5-29C27EDD5AE4}
+		{A33DA369-E5F9-4D3A-92AA-E71F38E8964D} = {A8E777BC-488F-459E-91E5-29C27EDD5AE4}
+		{6E60A732-E883-451D-B630-6817D62359B7} = {A8E777BC-488F-459E-91E5-29C27EDD5AE4}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6301EDC1-B659-47FD-886C-1062F5DCAED5}

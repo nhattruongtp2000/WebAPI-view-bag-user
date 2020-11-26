@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using WebAPI.Application.Catalog.Categories;
+using WebAPI.ViewModels.Catalog.Categories;
 
 namespace WebAPI.BackendAPI.Controllers
 {
@@ -25,6 +26,13 @@ namespace WebAPI.BackendAPI.Controllers
         {
             var products = await _categoryService.GetAll(languageId);
             return Ok(products);
+        }
+
+        [HttpGet("paging")]
+        public async Task<IActionResult> GetAllPaging([FromQuery] GetCategoryPagingRequest request)
+        {
+            var categories = await _categoryService.GetCategoriesPagings(request);
+            return Ok(categories);
         }
     }
 }

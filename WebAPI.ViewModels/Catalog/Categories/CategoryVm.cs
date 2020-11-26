@@ -8,6 +8,13 @@ namespace WebAPI.ViewModels.Catalog.Categories
     {
         public int Id { get; set; }
 
-        public string Name { get; set; }
+        public int ProductId { get; set; }
+
+        public string Name { set; get; }
+        public string SeoDescription { set; get; }
+        public string SeoTitle { set; get; }
+        public string LanguageId { set; get; }
+        public string SeoAlias { set; get; }
+
     }
 }
