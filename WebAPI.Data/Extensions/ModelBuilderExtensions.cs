@@ -34,8 +34,8 @@ namespace WebAPI.Data.Extensions
                 new productColor() { idColor = "Red", colorName = "Red" }
             );
             modelBuilder.Entity<Category>().HasData(
-                new Category() { idCategory=1,categoryName="Shoes"},
-                new Category() { idCategory =2, categoryName = "Shirt" }
+                new Category() { idCategory=1, IsShowOnHome = true, SortOrder = 1, },
+                new Category() { idCategory = 2, IsShowOnHome = true, SortOrder = 2, }
             );
             modelBuilder.Entity<productTypes>().HasData(
                 new productTypes() { idType="1",typeName="Cheap"},

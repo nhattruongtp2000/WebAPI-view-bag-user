@@ -27,6 +27,7 @@ namespace WebAPI.Data.EF
             modelBuilder.ApplyConfiguration(new ProductInCategoryConfiguration());
             modelBuilder.ApplyConfiguration(new usersConfiguration());
             modelBuilder.ApplyConfiguration(new productPhotosConfiguration());
+            modelBuilder.ApplyConfiguration(new CategoryConfiguration());
 
             modelBuilder.Entity<IdentityUserClaim<Guid>>().ToTable("UserClaims");
             modelBuilder.Entity<IdentityUserRole<Guid>>().ToTable("UserRoles").HasKey(x => new { x.UserId, x.RoleId });

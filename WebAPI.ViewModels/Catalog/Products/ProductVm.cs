@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using WebAPI.ViewModels.Catalog.Categories;
 
 namespace WebAPI.ViewModels.Catalog.Products
 {
@@ -17,6 +18,8 @@ namespace WebAPI.ViewModels.Catalog.Products
 
         public string LanguageId { set; get; }
         public DateTime dateAdded { get; set; }
+
+        public List<string> Categories { get; set; } = new List<string>();
 
 
     }

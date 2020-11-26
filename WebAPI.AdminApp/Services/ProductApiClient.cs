@@ -1,11 +1,13 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Text;
 using System.Threading.Tasks;
 using WebAPI.Utilities.Constants;
 using WebAPI.ViewModels.Catalog.Products;
@@ -26,6 +28,25 @@ namespace WebAPI.AdminApp.Services
             _httpContextAccessor = httpContextAccessor;
             _configuration = configuration;
             _httpClientFactory = httpClientFactory;
+        }
+
+        public async Task<ApiResult<bool>> CategoryAssign(int id, CategoryAssignRequest request)
+        {
+            var client = _httpClientFactory.CreateClient();
+            client.BaseAddress = new Uri(_configuration["BaseAddress"]);
+            var sessions = _httpContextAccessor.HttpContext.Session.GetString("Token");
+
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", sessions);
+
+            var json = JsonConvert.SerializeObject(request);
+            var httpContent = new StringContent(json, Encoding.UTF8, "application/json");
+
+            var response = await client.PutAsync($"/api/products/{id}/categories", httpContent);
+            var result = await response.Content.ReadAsStringAsync();
+            if (response.IsSuccessStatusCode)
+                return JsonConvert.DeserializeObject<ApiSuccessResult<bool>>(result);
+
+            return JsonConvert.DeserializeObject<ApiErrorResult<bool>>(result);
         }
 
         public async Task<bool> CreateProduct(ProductCreateRequest request)
@@ -66,6 +87,13 @@ namespace WebAPI.AdminApp.Services
             var response = await client.PostAsync($"/api/products/", requestContent);
             return response.IsSuccessStatusCode;
 
+        }
+
+        public async Task<ProductVm> GetById(int id, string languageId)
+        {
+            var data = await GetAsync<ProductVm>($"/api/products/{id}/{languageId}");
+
+            return data;
         }
 
         public async Task<PagedResult<ProductVm>> GetPagings(GetManageProductPagingRequest request)
