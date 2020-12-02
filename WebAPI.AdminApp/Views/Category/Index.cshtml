@@ -59,8 +59,17 @@
                             <th>
                                 Tên
                             </th>
+                            <th>
+                                SeoTitle
+                            </th>
+                            <th>
+                                SeoAlias
+                            </th>
+                            <th>
+                                SeoDescription
+                            </th>
 
-                           
+
 
                             <th></th>
                         </tr>
@@ -68,20 +77,29 @@
                     <tbody>
                         @foreach (var item in Model.Items)
                         {
-                            <tr>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Id)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Name)
-                                </td>
-                       
-                                <td>
-                                    @Html.ActionLink("Sửa", "Edit", new { id = item.Id }) |
-                                    @Html.ActionLink("Xem", "Details", new { id = item.Id }) |
-                                    @Html.ActionLink("Xóa", "Delete", new { id = item.Id }) |
-                                </td>
-                            </tr>
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Id)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.SeoTitle)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.SeoAlias)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.SeoDescription)
+                            </td>
+
+                            <td>
+                                @Html.ActionLink("Sửa", "Edit", new { id = item.Id }) |
+                                @Html.ActionLink("Xem", "Details", new { id = item.Id }) |
+                                @Html.ActionLink("Xóa", "Delete", new { id = item.Id }) |
+                            </td>
+                        </tr>
                         }
                     </tbody>
                 </table>

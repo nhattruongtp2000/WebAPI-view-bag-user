@@ -82,6 +82,7 @@ namespace WebAPI.AdminApp.Services
             requestContent.Add(new StringContent(request.idSize.ToString()), "idSize");
             requestContent.Add(new StringContent(request.idColor.ToString()), "idColor");
             requestContent.Add(new StringContent(request.idType.ToString()), "idType");
+            requestContent.Add(new StringContent(request.idCategory.ToString()), "idCategory");
             requestContent.Add(new StringContent(languageId), "languageId");
 
             var response = await client.PostAsync($"/api/products/", requestContent);

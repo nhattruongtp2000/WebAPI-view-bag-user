@@ -16,7 +16,7 @@ namespace WebAPI.Data.Entities
 
         public bool IsDefault { get; set; }
 
-        public List<productDetail> ProductTranslations { get; set; }
+        public List<productDetail> productDetails { get; set; }
 
         public List<Category> Categories { get; set; }
 

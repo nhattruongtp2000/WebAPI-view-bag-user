@@ -12,5 +12,9 @@ namespace WebAPI.AdminApp.Services
         Task<List<CategoryVm>> GetAll(string languageId);
 
         Task<PagedResult<CategoryVm>> GetCategoriesPagings(GetCategoryPagingRequest request);
+
+        Task<bool> CreateProduct(CategoryCreateRequest request);
+
+        Task<CategoryVm> GetById(int id, string languageId);
     }
 }

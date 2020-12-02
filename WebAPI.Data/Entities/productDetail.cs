@@ -37,12 +37,10 @@ namespace WebAPI.Data.Entities
    
         public DateTime dateAdded { get; set; }
 
-        [ForeignKey("idProduct")]
-        public virtual products Products { get; set; }
+        
+        public  products Products { get; set; }
 
-
-        [ForeignKey("LanguageId")]
-        public virtual Language Language { get; set; }
+        public  Language Language { get; set; }
 
 
     }

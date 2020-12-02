@@ -10,7 +10,7 @@ using WebAPI.Data.EF;
 namespace WebAPI.Data.Migrations
 {
     [DbContext(typeof(WebApiDbContext))]
-    [Migration("20201125171643_initial")]
+    [Migration("20201202030808_initial")]
     partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -130,34 +130,33 @@ namespace WebAPI.Data.Migrations
                         .HasColumnType("int")
                         .UseIdentityColumn();
 
+                    b.Property<bool>("IsShowOnHome")
+                        .HasColumnType("bit");
+
                     b.Property<string>("LanguageId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("categoryName")
-                        .IsRequired()
-                        .HasColumnType("VARCHAR(200)");
-
-                    b.Property<int?>("idProduct")
+                    b.Property<int>("SortOrder")
                         .HasColumnType("int");
 
                     b.HasKey("idCategory");
 
                     b.HasIndex("LanguageId");
 
-                    b.HasIndex("idProduct");
-
-                    b.ToTable("productCategories");
+                    b.ToTable("Categories");
 
                     b.HasData(
                         new
                         {
                             idCategory = 1,
-                            categoryName = "Shoes"
+                            IsShowOnHome = true,
+                            SortOrder = 1
                         },
                         new
                         {
                             idCategory = 2,
-                            categoryName = "Shirt"
+                            IsShowOnHome = true,
+                            SortOrder = 2
                         });
                 });
 
@@ -427,9 +426,6 @@ namespace WebAPI.Data.Migrations
                     b.Property<DateTime>("expiredSalingDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("idProduct")
-                        .HasColumnType("int");
-
                     b.Property<bool>("isSaling")
                         .HasColumnType("bit");
 
@@ -447,7 +443,7 @@ namespace WebAPI.Data.Migrations
 
                     b.HasIndex("LanguageId");
 
-                    b.HasIndex("idProduct");
+                    b.HasIndex("ProductId");
 
                     b.ToTable("productDetails");
 
@@ -689,7 +685,7 @@ namespace WebAPI.Data.Migrations
                         new
                         {
                             Id = new Guid("8d04dce2-969a-435d-bba4-df3f325983dc"),
-                            ConcurrencyStamp = "abda05e3-09ec-43fb-b740-975673c29dc5",
+                            ConcurrencyStamp = "c85a65e1-3b0c-41e9-a151-e64e6e3a89df",
                             Description = "Administrator role",
                             Name = "admin",
                             NormalizedName = "admin"
@@ -777,13 +773,13 @@ namespace WebAPI.Data.Migrations
                         {
                             Id = new Guid("69bd714f-9576-45ba-b5b7-f00649be00de"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "dd749c45-1cc9-479d-bd72-0f7db1999c3f",
+                            ConcurrencyStamp = "497b252f-1d45-4646-903b-5c32f5d32317",
                             Email = "nhattruongtp2000@gmail.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "nhattruongtp2000@gmail.com",
                             NormalizedUserName = "admin",
-                            PasswordHash = "AQAAAAEAACcQAAAAEFcX/psx36KMGfHWBWTDFk2s4jt7NyzX99lWOU8cUJxrTV9MfkZelTQKz6L8ipvK5w==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEMtnrtZGLx6uTB2qmepeOQG3/VR8gbe02Jc/jpwgtQQJ/1chssww5ePguseorbglIA==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             TwoFactorEnabled = false,
@@ -816,12 +812,6 @@ namespace WebAPI.Data.Migrations
                     b.HasOne("WebAPI.Data.Entities.Language", null)
                         .WithMany("Categories")
                         .HasForeignKey("LanguageId");
-
-                    b.HasOne("WebAPI.Data.Entities.products", "Products")
-                        .WithMany()
-                        .HasForeignKey("idProduct");
-
-                    b.Navigation("Products");
                 });
 
             modelBuilder.Entity("WebAPI.Data.Entities.CategoryTranslation", b =>
@@ -898,12 +888,14 @@ namespace WebAPI.Data.Migrations
                         .HasForeignKey("CategoryidCategory");
 
                     b.HasOne("WebAPI.Data.Entities.Language", "Language")
-                        .WithMany("ProductTranslations")
+                        .WithMany("productDetails")
                         .HasForeignKey("LanguageId");
 
                     b.HasOne("WebAPI.Data.Entities.products", "Products")
                         .WithMany("productDetails")
-                        .HasForeignKey("idProduct");
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Language");
 
@@ -992,7 +984,7 @@ namespace WebAPI.Data.Migrations
 
                     b.Navigation("CategoryTranslations");
 
-                    b.Navigation("ProductTranslations");
+                    b.Navigation("productDetails");
                 });
 
             modelBuilder.Entity("WebAPI.Data.Entities.ordersDetails", b =>

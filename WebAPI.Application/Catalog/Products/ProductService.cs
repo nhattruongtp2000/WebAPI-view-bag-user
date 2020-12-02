@@ -57,15 +57,14 @@ namespace WebAPI.Application.Catalog.Products
             product.ViewCount += 1;
             await _context.SaveChangesAsync();
         }
-      
+
 
         public async Task<int> Create(ProductCreateRequest request)
         {
             var product = new products()
-            {
+            {              
                 idSize = request.idSize,
                 idBrand = request.idBrand,
-    
                 idColor = request.idColor,
                 idType = request.idType,
                 ViewCount = 0,
@@ -80,6 +79,15 @@ namespace WebAPI.Application.Catalog.Products
                          dateAdded=DateTime.Now,
                          LanguageId = request.LanguageId
                      }
+                
+            },
+                productInCategories = new List<ProductInCategory>()
+                {
+                    new ProductInCategory()
+                    {
+                        idCategory=request.idCategory,
+                        
+                    }
                 }
             };
 
@@ -171,33 +179,33 @@ namespace WebAPI.Application.Catalog.Products
             return pagedResult;
         }
 
+
+        
         public async Task<ProductVm> GetById(int productId, string languageId)
         {
             var product = await _context.products.FindAsync(productId);
-            var productTranslation = await _context.productDetails.FirstOrDefaultAsync(x => x.ProductId == productId && x.LanguageId == languageId) ;
-
+            var productTranslation = await _context.productDetails.FirstOrDefaultAsync(x => x.ProductId == productId && x.LanguageId == languageId);
 
             var categories = await (from c in _context.Categories
                                     join ct in _context.CategoryTranslations on c.idCategory equals ct.CategoryId
                                     join pic in _context.ProductInCategories on c.idCategory equals pic.idCategory
                                     where pic.ProductId == productId && ct.LanguageId == languageId
                                     select ct.Name).ToListAsync();
-
             var productViewModel = new ProductVm()
             {
                 Id = product.ProductId,
-                ProductName = productTranslation.ProductName,
+                ProductName = productTranslation != null ? productTranslation.ProductName : null,
                 price = productTranslation.price,
-                
                 salePrice = productTranslation.salePrice,
                 ViewCount = product.ViewCount,
                 detail = productTranslation.detail,
-                dateAdded =productTranslation.dateAdded,
+                dateAdded = productTranslation.dateAdded, 
                 LanguageId = productTranslation.LanguageId,
-                 Categories = categories
+                Categories=categories
             };
             return productViewModel;
         }
+
 
         public async Task<ProductImageViewModel> GetImageById(int imageId)
         {

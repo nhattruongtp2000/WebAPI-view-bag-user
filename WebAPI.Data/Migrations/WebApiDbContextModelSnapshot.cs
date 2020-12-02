@@ -424,9 +424,6 @@ namespace WebAPI.Data.Migrations
                     b.Property<DateTime>("expiredSalingDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("idProduct")
-                        .HasColumnType("int");
-
                     b.Property<bool>("isSaling")
                         .HasColumnType("bit");
 
@@ -444,7 +441,7 @@ namespace WebAPI.Data.Migrations
 
                     b.HasIndex("LanguageId");
 
-                    b.HasIndex("idProduct");
+                    b.HasIndex("ProductId");
 
                     b.ToTable("productDetails");
 
@@ -686,7 +683,7 @@ namespace WebAPI.Data.Migrations
                         new
                         {
                             Id = new Guid("8d04dce2-969a-435d-bba4-df3f325983dc"),
-                            ConcurrencyStamp = "f321676e-3060-4f38-b0f7-dd190ef1a593",
+                            ConcurrencyStamp = "c85a65e1-3b0c-41e9-a151-e64e6e3a89df",
                             Description = "Administrator role",
                             Name = "admin",
                             NormalizedName = "admin"
@@ -774,13 +771,13 @@ namespace WebAPI.Data.Migrations
                         {
                             Id = new Guid("69bd714f-9576-45ba-b5b7-f00649be00de"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "a2dd5df0-c86c-4d1e-9267-f470ffbfc47a",
+                            ConcurrencyStamp = "497b252f-1d45-4646-903b-5c32f5d32317",
                             Email = "nhattruongtp2000@gmail.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "nhattruongtp2000@gmail.com",
                             NormalizedUserName = "admin",
-                            PasswordHash = "AQAAAAEAACcQAAAAEELk/sMiVX4/kUlcUxgWkaMaU2hax/EthbkE5kATfB/AxjPWdcR+rXpAJXrZnXpthA==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEMtnrtZGLx6uTB2qmepeOQG3/VR8gbe02Jc/jpwgtQQJ/1chssww5ePguseorbglIA==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             TwoFactorEnabled = false,
@@ -889,12 +886,14 @@ namespace WebAPI.Data.Migrations
                         .HasForeignKey("CategoryidCategory");
 
                     b.HasOne("WebAPI.Data.Entities.Language", "Language")
-                        .WithMany("ProductTranslations")
+                        .WithMany("productDetails")
                         .HasForeignKey("LanguageId");
 
                     b.HasOne("WebAPI.Data.Entities.products", "Products")
                         .WithMany("productDetails")
-                        .HasForeignKey("idProduct");
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Language");
 
@@ -983,7 +982,7 @@ namespace WebAPI.Data.Migrations
 
                     b.Navigation("CategoryTranslations");
 
-                    b.Navigation("ProductTranslations");
+                    b.Navigation("productDetails");
                 });
 
             modelBuilder.Entity("WebAPI.Data.Entities.ordersDetails", b =>

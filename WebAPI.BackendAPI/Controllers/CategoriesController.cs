@@ -34,5 +34,34 @@ namespace WebAPI.BackendAPI.Controllers
             var categories = await _categoryService.GetCategoriesPagings(request);
             return Ok(categories);
         }
+
+        //Create
+        [HttpPost]
+        [Consumes("multipart/form-data")]
+        public async Task<IActionResult> Create([FromForm] CategoryCreateRequest request)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var idCategory = await _categoryService.Create(request);
+            if (idCategory == 0)
+                return BadRequest();
+
+            var product = await _categoryService.GetById(idCategory, request.LanguageId);
+
+            return CreatedAtAction(nameof(GetById), new { id = idCategory }, product);
+        }
+
+        //http://localhost:port/category/1
+        [HttpGet("{idCategory}/{languageId}")]
+        public async Task<IActionResult> GetById(int idCategory, string languageId)
+        {
+            var category = await _categoryService.GetById(idCategory, languageId);
+            if (category == null)
+                return BadRequest("Cannot find product");
+            return Ok(category);
+        }
     }
 }

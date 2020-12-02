@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using WebAPI.Data.EF;
+using WebAPI.Data.Entities;
 using WebAPI.ViewModels.Catalog.Categories;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
@@ -19,6 +20,32 @@ namespace WebAPI.Application.Catalog.Categories
             _context = context;
         }
 
+        public async Task<int> Create(CategoryCreateRequest request)
+        {
+            var category = new Category()
+            {
+                SortOrder = request.SortOrder,
+                IsShowOnHome = request.IsShowOnHome,
+                CategoryTranslations = new List<CategoryTranslation>()
+                {
+                     new CategoryTranslation()
+                     {
+                         Name=request.Name,
+                         SeoDescription=request.SeoDescription,
+                         SeoAlias=request.SeoAlias,
+                         SeoTitle=request.SeoTitle,
+                         LanguageId = request.LanguageId
+                     }
+                }
+            };
+
+            //Save image
+           
+            _context.Categories.Add(category);
+            await _context.SaveChangesAsync();
+            return category.idCategory;
+        }
+
         public async Task<List<CategoryVm>> GetAll(string languageId)
         {
             var query = from c in _context.Categories
@@ -30,6 +57,31 @@ namespace WebAPI.Application.Catalog.Categories
                 Id = x.c.idCategory,
                 Name = x.ct.Name
             }).ToListAsync();
+        }
+
+        public async Task<CategoryVm> GetById(int categoryId, string languageId)
+        {
+            var category = await _context.products.FindAsync(categoryId);
+            var categoryTranslation = await _context.CategoryTranslations.FirstOrDefaultAsync(x => x.CategoryId == categoryId && x.LanguageId == languageId);
+
+
+            var categories = await(from c in _context.Categories
+                                   join ct in _context.CategoryTranslations on c.idCategory equals ct.CategoryId
+                                   join pic in _context.ProductInCategories on c.idCategory equals pic.idCategory
+                                   where pic.idCategory == categoryId && ct.LanguageId == languageId
+                                   select ct.Name).ToListAsync();
+
+            var categoryViewModel = new CategoryVm()
+            {
+                Id = category.ProductId,
+                Name = categoryTranslation.Name,
+                SeoAlias = categoryTranslation.SeoAlias,
+
+                SeoDescription = categoryTranslation.SeoDescription,
+                SeoTitle = categoryTranslation.SeoTitle,
+                LanguageId = categoryTranslation.LanguageId,
+            };
+            return categoryViewModel;
         }
 
         public async Task<PagedResult<CategoryVm>> GetCategoriesPagings(GetCategoryPagingRequest request)
